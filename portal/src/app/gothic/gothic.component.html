@@ -1,0 +1,16 @@
+<div>
+    <ng-container *ngIf="newestStream && ongoingGothic; else noGothic">
+        <a href="https://twitch.tv/dzejth" target="_blank">Dzej strimuje {{newestStream.gameName}}!!!</a>
+        <img src="https://cdn.betterttv.net/emote/5d38aaa592fc550c2d5996b8/3x">
+        <img src="assets/dzejtelman.png">
+    </ng-container>
+    <ng-template #noGothic>
+        <ng-container *ngIf="newestStream && ongoing">
+            <a href="https://twitch.tv/dzejth" target="_blank">Dzej strimuje!</a>
+            <p>Ale nie Gothica, tylko {{newestStream.gameName}}.</p>
+        </ng-container>
+        <p>Ostatni strim z Gothica odbył się {{gothicTimestamp}} temu.</p>
+        <p>DŻEJ, KIEDY GOTHICC?</p>
+        <img src="assets/czwarta-zasada-strima.png">
+    </ng-template>
+</div>

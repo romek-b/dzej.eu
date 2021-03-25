@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  mongodb:
+    image: mongo:bionic
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - /usr/local/var/mongodb:/data/db
+  
+  api:
+    build: ../api
+    restart: always
+    environment:
+      - DatabaseSettings:ConnectionString=${DbConnectionString}
+      - TwitchAppSettings:ClientId=${TwitchClientId}
+      - TwitchAppSettings:ClientSecret=${TwitchClientSecret}
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - 5000:80
+
+  portal:
+    build: ../portal
+    restart: always
+    ports:
+      - 80:80
