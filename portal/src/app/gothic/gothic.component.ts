@@ -36,7 +36,7 @@ export class GothicComponent implements OnInit {
     this.streams.getNewest().pipe(
       switchMap(stream => of({
           stream: stream,
-          ongoingGothic: this.gothicPattern.test(stream.gameName) && stream.isOngoing
+          ongoingGothic: stream && stream.isOngoing && this.gothicPattern.test(stream.gameName)
         }).pipe(
           switchMap(({ongoingGothic}) => iif(
             () => !ongoingGothic,
@@ -50,7 +50,7 @@ export class GothicComponent implements OnInit {
     ).subscribe(({stream, gothicStream, ongoingGothic}) => {
       this.newestStream = stream;
       this.newestGothicStream = gothicStream;
-      this.ongoing = stream.isOngoing;
+      this.ongoing = stream && stream.isOngoing;
       this.ongoingGothic = ongoingGothic;
       this.setGothicTimeStamp();
     });
