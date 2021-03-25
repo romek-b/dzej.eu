@@ -13,6 +13,7 @@ services:
     restart: always
     environment:
       - DatabaseSettings:ConnectionString=${DbConnectionString}
+      - DatabaseSettings:DatabaseName=${DbName}
       - TwitchAppSettings:ClientId=${TwitchClientId}
       - TwitchAppSettings:ClientSecret=${TwitchClientSecret}
       - ASPNETCORE_ENVIRONMENT=Production
