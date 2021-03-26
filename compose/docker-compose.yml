@@ -24,3 +24,5 @@ services:
       - 443:443
     volumes:
       - /usr/local/var/nginx:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/www/certbot:/var/www/certbot
