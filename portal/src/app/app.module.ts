@@ -5,16 +5,22 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { GothicComponent } from './gothic/gothic.component';
 import { HttpClientModule } from '@angular/common/http';
+import { WheelOfFortuneComponent } from './wheel-of-fortune/wheel-of-fortune.component';
+import { NgxWheelModule } from 'ngx-wheel';
+import { LosowanieComponent } from './losowanie/losowanie.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GothicComponent
+    GothicComponent,
+    WheelOfFortuneComponent,
+    LosowanieComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgxWheelModule
   ],
   providers: [],
   bootstrap: [AppComponent]

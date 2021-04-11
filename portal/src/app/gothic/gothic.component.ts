@@ -11,7 +11,6 @@ import 'moment-duration-format';
   selector: 'app-gothic',
   templateUrl: 'gothic.component.html'
 })
-
 export class GothicComponent implements OnInit {
   timerSub: Subscription;
 
