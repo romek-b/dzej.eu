@@ -16,5 +16,7 @@ namespace DzejEu.Api.Clients.Database
         }
 
         public IMongoCollection<Stream> Streams => _database.GetCollection<Stream>("streams");
+
+        public IMongoCollection<Topic> Topics => _database.GetCollection<Topic>("topics");
     }
 }

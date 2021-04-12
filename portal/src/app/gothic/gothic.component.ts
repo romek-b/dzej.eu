@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { iif, of, Subscription, interval } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { Stream } from '../models/Stream';
+import { Stream } from '../models/stream';
 import { StreamsService } from '../services/streams.service';
 import * as moment from 'moment';
 import 'moment-duration-format';
 
 @Component({
   selector: 'app-gothic',
-  templateUrl: 'gothic.component.html'
+  templateUrl: 'gothic.component.html',
+  styleUrls: ['gothic.component.css']
 })
 export class GothicComponent implements OnInit {
   timerSub: Subscription;

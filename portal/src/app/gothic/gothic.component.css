@@ -6,9 +6,3 @@ div {
     align-items: center;
     justify-content: center;
 }
-
-.dynamic-background {
-    background-image: url("/assets/uspinme.gif");
-    background-size: cover;
-    background-position: center;
-}

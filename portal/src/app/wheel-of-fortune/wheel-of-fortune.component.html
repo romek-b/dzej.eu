@@ -1,16 +1,10 @@
-<div [class.dynamic-background]="started && !completed">
-  <ngx-wheel class="wheel"
-    width='600'
-    height='600'
-    spinDuration='3'
-    [idToLandOn]='idToLandOn'
-    [items]="items"
-    [innerRadius]='50'
-    [spinAmount]='10'
-    pointerStrokeColor='black'
-    pointerFillColor='yellow'
-    (onSpinStart)='spinStart()'
-    (onSpinComplete)='spinComplete()'>
+<div *ngIf="topics" [class.dynamic-background]="started && !completed">
+  <ngx-wheel #wheel [width]='wheelSize' [height]='wheelSize' spinDuration='3' [idToLandOn]='result' [items]="topics"
+    [innerRadius]='50' [spinAmount]='10' pointerStrokeColor='black' pointerFillColor='yellow'
+    (onSpinStart)='spinStart()' (onSpinComplete)='spinComplete()'>
   </ngx-wheel>
-  <p *ngIf="completed">{{seed[idToLandOn].text}}</p>
+  <ng-container>
+    <p *ngIf="completed">{{winner}}</p>
+    <button *ngIf="completed" (click)="reset()">jeszcze raz</button>
+  </ng-container>
 </div>

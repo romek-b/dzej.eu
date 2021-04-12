@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgxWheelComponent } from 'ngx-wheel';
+import { TopicsService } from '../services/topics.service';
 
 @Component({
   selector: 'app-wheel-of-fortune',
@@ -6,42 +8,40 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['wheel-of-fortune.component.css']
 })
 export class WheelOfFortuneComponent implements OnInit {
+  @ViewChild(NgxWheelComponent) wheel: any;
+  private colors = ['#FF0000', '#0000FF']
 
-  public items: any[];
-  seed = [
-    { id: 0, text: 'Gothic' },
-    { id: 1, text: 'Dark Souls 3' },
-    { id: 2, text: 'sprzątamy' },
-    { id: 3, text: 'zostaje czy oddaje' },
-    { id: 4, text: 'brak koncepcji' },
-    { id: 5, text: 'planszowka'},
-    { id: 6, text: 'Splitter działa' },
-    { id: 7, text: 'NO SIGNAL' },
-    { id: 8, text: 'MGS3' },
-    { id: 9, text: 'NIE MA SPANIA, SĄSIADKA' },
-    { id: 10, text: 'ŚWIECA' },
-    { id: 11, text: 'mam jutro na 5 do pracy' }
-  ]
-  colors = ['#FF0000', '#0000FF']
-  idToLandOn: any;
-  started = false;
-  completed = false;
+  topics: any[];
+  result: number;
+  winner: string;
+
+  wheelSize: number;
+
+  started: boolean;
+  completed: boolean;
 
   spinSound: HTMLAudioElement;
-  constructor() { }
+  constructor(private service: TopicsService) { }
 
   ngOnInit(): void {
-    this.idToLandOn = this.seed[Math.floor(Math.random() * this.seed.length)].id;
-    this.items = this.seed.map((value) => ({
-      fillStyle: this.colors[value.id % 2],
-      text: value.text,
-      id: value.id,
-      textFillStyle: 'white',
-      textFontSize: '16'
-    }));
+    this.resizeWheel();
+    this.service.getAll().subscribe(res => {
+      this.topics = res.map((value, index) => ({
+        fillStyle: this.colors[index % 2],
+        text: value,
+        id: index,
+        textFillStyle: 'white',
+        textFontSize: '13'
+      }));
+      this.reset();
+    });
 
     this.spinSound = new Audio("./assets/zakrecmy_koem_fortuny.mp3");
     this.spinSound.load();
+  }
+
+  resizeWheel(): void {
+    this.wheelSize = Math.floor(Math.min(window.innerHeight, window.innerWidth) * 0.8);
   }
 
   spinStart(): void {
@@ -51,5 +51,13 @@ export class WheelOfFortuneComponent implements OnInit {
 
   spinComplete(): void {
     this.completed = true;
+    this.winner = this.topics.find(x => x.id == this.result).text;
+  }
+
+  reset(): void {
+    this.started = false;
+    this.completed = false;
+    this.result = Math.floor(Math.random() * this.topics.length);
+    this.wheel?.reset();
   }
 }

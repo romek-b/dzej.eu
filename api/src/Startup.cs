@@ -33,6 +33,7 @@ namespace DzejEu.Api
             services.AddMemoryCache();
             services.AddSingleton<DatabaseClient>();
             services.AddTransient<IStreamsRepository, StreamsRepository>();
+            services.AddTransient<ITopicsRepository, TopicsRepository>();
 
             services.AddHttpClient<ITwitchAuthClient, TwitchAuthClient>();
             services.AddTransient<ITwitchTokenProvider, TwitchTokenProvider>();
