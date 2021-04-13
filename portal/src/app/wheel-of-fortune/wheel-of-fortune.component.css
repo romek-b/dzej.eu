@@ -7,8 +7,14 @@ div {
     justify-content: center;
 }
 
-.dynamic-background {
-    background-image: url("/assets/uspinme.gif");
-    background-size: cover;
-    background-position: center;
+.background {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+}
+
+video {
+    height: 150vh;
+    width: 150vw;
+    object-fit: cover;
 }
