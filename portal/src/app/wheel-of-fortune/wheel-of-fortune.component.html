@@ -10,7 +10,7 @@
   </ng-container>
 </div>
 <div *ngIf="videoStarted && !completed" class="background">
-  <video autoplay (timeupdate)="log($event)">
+  <video autoplay playsinline (timeupdate)="log($event)">
     <source src="/assets/uspinme.mp4" type="video/mp4">
   </video>
 </div>
