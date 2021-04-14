@@ -1,15 +1,16 @@
 <div *ngIf="topics">
-  <ngx-wheel #wheel [width]='wheelSize' [height]='wheelSize' spinDuration='3' [idToLandOn]='result' [items]="topics"
-    [innerRadius]='50' [spinAmount]='10' pointerStrokeColor='black' pointerFillColor='yellow'
-    (onSpinStart)='spinStart()' (onSpinComplete)='spinComplete()'>
+  <ngx-wheel #wheel [width]='wheelSize' [height]='wheelSize' spinDuration='6.16' [idToLandOn]='result'
+    [items]="topics" [disableSpinOnClick]="true"
+    [innerRadius]='wheelSize/12' [spinAmount]='60' pointerStrokeColor='black' pointerFillColor='yellow'
+    (click)='videoStart()' (onSpinComplete)='spinComplete()'>
   </ngx-wheel>
-  <ng-container>
-    <p *ngIf="completed">{{winner}}</p>
-    <button *ngIf="completed" (click)="reset()">jeszcze raz</button>
+  <ng-container *ngIf="completed">
+    <p>{{winner}}</p>
+    <button (click)="reset()">jeszcze raz</button>
   </ng-container>
 </div>
-<div *ngIf="started && !completed" class="background">
-  <video autoplay>
-    <source src="https://i.imgur.com/Rz7cJad.mp4#t=5" type="video/mp4">
+<div *ngIf="videoStarted && !completed" class="background">
+  <video autoplay (timeupdate)="log($event)">
+    <source src="/assets/uspinme.mp4" type="video/mp4">
   </video>
 </div>

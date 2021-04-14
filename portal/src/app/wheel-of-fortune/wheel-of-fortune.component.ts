@@ -17,10 +17,10 @@ export class WheelOfFortuneComponent implements OnInit {
 
   wheelSize: number;
 
-  started: boolean;
+  videoStarted: boolean;
+  spinStarted: boolean;
   completed: boolean;
 
-  spinSound: HTMLAudioElement;
   constructor(private service: TopicsService) { }
 
   ngOnInit(): void {
@@ -31,33 +31,36 @@ export class WheelOfFortuneComponent implements OnInit {
         text: value,
         id: index,
         textFillStyle: 'white',
-        textFontSize: '13'
+        textFontSize: this.wheelSize/37
       }));
       this.reset();
     });
-
-    this.spinSound = new Audio("./assets/zakrecmy_koem_fortuny.mp3");
-    this.spinSound.load();
   }
 
   resizeWheel(): void {
     this.wheelSize = Math.floor(Math.min(window.innerHeight, window.innerWidth) * 0.8);
   }
 
-  spinStart(): void {
-    this.spinSound.play();
-    this.started = true;
+  videoStart(): void {
+    this.videoStarted = true;
   }
 
   spinComplete(): void {
     this.completed = true;
+    this.videoStarted = false;
     this.winner = this.topics.find(x => x.id == this.result).text;
   }
 
   reset(): void {
-    this.started = false;
+    this.spinStarted = false;
     this.completed = false;
     this.result = Math.floor(Math.random() * this.topics.length);
     this.wheel?.reset();
+  }
+
+  log(event: any) {
+    if(!this.spinStarted && event.target.currentTime > 8.78) {
+      this.wheel.spin();
+    };
   }
 }
