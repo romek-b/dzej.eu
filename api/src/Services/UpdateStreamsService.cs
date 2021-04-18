@@ -57,9 +57,13 @@ namespace DzejEu.Api.Services
                 if(newestSavedStream.TwitchId != currentTwitchStream.Id
                     || newestSavedStream.GameName != currentTwitchStream.GameName)
                 {
-                    await _repository.MarkAsFinished(newestSavedStream.Id);
+                    await MarkStreamIsOngoing(newestSavedStream, false);
                     await AddStreamToDatabase(currentTwitchStream);
                     return;
+                }
+                if(!newestSavedStream.IsOngoing)
+                {
+                    await MarkStreamIsOngoing(newestSavedStream, true);
                 }
                 _logger.LogInformation(
                     $"Stream {newestSavedStream.Id} is ongoing.");
@@ -70,7 +74,7 @@ namespace DzejEu.Api.Services
             {
                 if(newestSavedStream.IsOngoing)
                 {
-                    await MarkStreamAsFinished(newestSavedStream);
+                    await MarkStreamIsOngoing(newestSavedStream, false);
                     return;
                 }
                 _logger.LogInformation($"No new streams found");
@@ -101,10 +105,11 @@ namespace DzejEu.Api.Services
                 $"Added new {currentTwitchStream.GameName} stream");
         }
 
-        private async Task MarkStreamAsFinished(Models.Database.Stream stream)
+        private async Task MarkStreamIsOngoing(Models.Database.Stream stream, bool isOngoing)
         {
-            await _repository.MarkAsFinished(stream.Id);
-            _logger.LogInformation($"Marked stream {stream.Id} as finished");
+            await _repository.SetIsOngoing(stream.Id, isOngoing);
+            var status = isOngoing ? "ongoing" : "finished";
+            _logger.LogInformation($"Marked stream {stream.Id} as {status}");
         }
     }
 }

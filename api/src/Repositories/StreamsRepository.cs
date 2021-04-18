@@ -21,10 +21,10 @@ namespace DzejEu.Api.Repositories
             await _db.Streams.InsertOneAsync(stream);
         }
 
-        public async Task MarkAsFinished(ObjectId id)
+        public async Task SetIsOngoing(ObjectId id, bool isOngoing)
         {
             var filter = Builders<Stream>.Filter.Eq(x => x.Id, id);
-            var update = Builders<Stream>.Update.Set(x => x.IsOngoing, false);
+            var update = Builders<Stream>.Update.Set(x => x.IsOngoing, isOngoing);
 
             await _db.Streams.FindOneAndUpdateAsync(filter, update);
         }

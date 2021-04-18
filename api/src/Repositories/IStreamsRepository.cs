@@ -9,6 +9,6 @@ namespace DzejEu.Api.Repositories
         Task Add(Stream stream);
         Task<Stream> GetNewest(string username);
         Task<Stream> GetNewestByGameNamePattern(string username, string pattern);
-        Task MarkAsFinished(ObjectId id);
+        Task SetIsOngoing(ObjectId id, bool isOngoing);
     }
 }
