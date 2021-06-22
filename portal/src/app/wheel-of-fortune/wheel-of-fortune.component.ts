@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { NgxWheelComponent } from 'ngx-wheel';
-import { TopicsService } from '../services/topics.service';
 
 @Component({
   selector: 'app-wheel-of-fortune',
@@ -10,6 +11,8 @@ import { TopicsService } from '../services/topics.service';
 export class WheelOfFortuneComponent implements OnInit {
   @ViewChild(NgxWheelComponent) wheel: any;
   private colors = ['#FF0000', '#0000FF']
+
+  private dropTimestamp = 8.78; // when music drops in the video
 
   topics: any[];
   result: number;
@@ -21,20 +24,19 @@ export class WheelOfFortuneComponent implements OnInit {
   spinStarted: boolean;
   completed: boolean;
 
-  constructor(private service: TopicsService) { }
+  constructor(private route: ActivatedRoute, private titleService: Title) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle("Losowanie - dzej.eu");
     this.resizeWheel();
-    this.service.getAll().subscribe(res => {
-      this.topics = res.map((value, index) => ({
-        fillStyle: this.colors[index % 2],
-        text: value,
-        id: index,
-        textFillStyle: 'white',
-        textFontSize: this.wheelSize/37
-      }));
-      this.reset();
-    });
+    this.topics = this.route.snapshot.data.topics.map((value, index) => ({
+      fillStyle: this.colors[index % 2],
+      text: value,
+      id: index,
+      textFillStyle: 'white',
+      textFontSize: this.wheelSize/37
+    }));
+    this.reset();
   }
 
   resizeWheel(): void {
@@ -59,7 +61,7 @@ export class WheelOfFortuneComponent implements OnInit {
   }
 
   log(event: any) {
-    if(!this.spinStarted && event.target.currentTime > 8.78) {
+    if(!this.spinStarted && event.target.currentTime > this.dropTimestamp) {
       this.wheel.spin();
     };
   }

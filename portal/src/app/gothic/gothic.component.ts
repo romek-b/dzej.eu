@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { iif, of, Subscription, interval } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Subscription, interval } from 'rxjs';
 import { Stream } from '../models/stream';
-import { StreamsService } from '../services/streams.service';
 import * as moment from 'moment';
 import 'moment-duration-format';
 
@@ -21,39 +20,19 @@ export class GothicComponent implements OnInit {
   ongoing: boolean;
   ongoingGothic: boolean;
 
-  gothic = 'gothic'; // duh
-  gothicPattern = /^.*gothic.*$/i;
-
   gothicTimestamp = "dawno";
 
-  constructor(private streams: StreamsService, private titleService: Title) {
-  }
+  constructor(private route: ActivatedRoute, private titleService: Title) { }
 
   ngOnInit(): void {
     moment.locale('pl');
     this.titleService.setTitle("Gothic - dzej.eu");
 
-    this.streams.getNewest().pipe(
-      switchMap(stream => of({
-          stream: stream,
-          ongoingGothic: stream && stream.isOngoing && this.gothicPattern.test(stream.gameName)
-        }).pipe(
-          switchMap(({ongoingGothic}) => iif(
-            () => !ongoingGothic,
-            this.streams.getNewestByName(this.gothic).pipe(
-              map(gothicStream => ({stream, gothicStream, ongoingGothic}))
-            ),
-            of({stream, gothicStream: stream, ongoingGothic})
-          ))
-        )
-      )
-    ).subscribe(({stream, gothicStream, ongoingGothic}) => {
-      this.newestStream = stream;
-      this.newestGothicStream = gothicStream;
-      this.ongoing = stream && stream.isOngoing;
-      this.ongoingGothic = ongoingGothic;
-      this.setGothicTimeStamp();
-    });
+    this.newestStream = this.route.snapshot.data.gothicData.stream;
+    this.newestGothicStream = this.route.snapshot.data.gothicData.gothicStream;
+    this.ongoing = this.newestStream?.isOngoing;
+    this.ongoingGothic = this.route.snapshot.data.gothicData.ongoingGothic;
+    this.setGothicTimeStamp();
 
     interval(1000).pipe().subscribe(() => {
       this.setGothicTimeStamp();
