@@ -11,7 +11,7 @@
             <a href="https://twitch.tv/dzejth" target="_blank">Dżej strimuje!</a>
             <p>Ale nie {{selectedGameName}}a, tylko {{latestStream.gameName}}.</p>
         </ng-container>
-        <p>Ostatni strim{{selectedGameName ? 'z '+selectedGameName+'a' : ''}}
+        <p>Ostatni strim {{selectedGameName ? 'z '+selectedGameName+'a' : ''}}
            odbył się {{timestamp$ | async}} temu.</p>
         <p class="uppercase">Dżej, kiedy {{ selectedGameName || 'strimek' }}??</p>
         <img src="assets/czwarta-zasada-strima.png">
